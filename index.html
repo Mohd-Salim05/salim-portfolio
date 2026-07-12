@@ -7,9 +7,7 @@
 <meta name="description" content="Portfolio of Mohd Salim Uddin, NetSuite Technical Consultant & SuiteScript Developer.">
 
 <style>
-/* ============================================================
-   TOKENS — change these to re-skin the whole site
-   ============================================================ */
+
 :root{
   --bg:            #0A0D13;
   --surface:       rgba(255,255,255,0.045);
@@ -54,9 +52,7 @@ p{ margin:0; }
 
 ::selection{ background:var(--accent); color:#08111f; }
 
-/* ============================================================
-   FLOATING GLASS NAVBAR
-   ============================================================ */
+
 .navbar-wrap{
   position:sticky; top:0; z-index:60;
   display:flex; justify-content:center;
@@ -116,9 +112,6 @@ p{ margin:0; }
   .brand{ font-size:12px; max-width:56vw; }
 }
 
-/* ============================================================
-   HERO — bento dashboard header
-   ============================================================ */
 .hero{ position:relative; margin:0 auto; padding:64px 24px 8px; overflow:hidden; }
 .glow{ position:absolute; border-radius:50%; filter:blur(70px); pointer-events:none; z-index:0; }
 .glow-1{ width:420px; height:420px; top:-160px; left:-120px; background:radial-gradient(circle, var(--accent-glow), transparent 70%); opacity:.5; }
@@ -184,9 +177,6 @@ p{ margin:0; }
   .hero h1{ font-size:26px; }
 }
 
-/* ============================================================
-   PANELS (sections) — glass widget cards, generated from data
-   ============================================================ */
 main{margin:0 auto; padding:56px 24px 100px; display:flex; flex-direction:column; gap:22px; }
 
 .panel{
@@ -207,11 +197,10 @@ main{margin:0 auto; padding:56px 24px 100px; display:flex; flex-direction:column
   .panel{ padding:26px 22px; border-radius:var(--r-md); }
 }
 
-/* prose */
+
 .prose p{ color:var(--text-muted); margin-bottom:12px; font-size:15px; max-width:720px; }
 .prose p:last-child{ margin-bottom:0; }
 
-/* skill groups */
 .skill-groups{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:24px; }
 .skill-group .g-title{ font-size:12px; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:.05em; margin-bottom:12px; }
 .chip-list{ display:flex; flex-wrap:wrap; gap:7px; }
@@ -223,7 +212,6 @@ main{margin:0 auto; padding:56px 24px 100px; display:flex; flex-direction:column
 @media (max-width:640px){ .skill-groups{ grid-template-columns:1fr 1fr; gap:18px; } }
 @media (max-width:420px){ .skill-groups{ grid-template-columns:1fr; } }
 
-/* timeline (experience) — workflow stepper */
 .tl-entry{ margin-bottom:30px; }
 .tl-entry:last-child{ margin-bottom:0; }
 .tl-head{ display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-bottom:2px; }
@@ -252,7 +240,6 @@ main{margin:0 auto; padding:56px 24px 100px; display:flex; flex-direction:column
 
 @media (max-width:640px){ .tl-steps{ padding-left:20px; } .tl-block::before{ left:-20px; } }
 
-/* project cards — bento tiles */
 .card-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:18px; }
 .card{
   position:relative; background:var(--surface-2); border:1px solid var(--border-soft); border-radius:var(--r-md);
@@ -270,7 +257,6 @@ main{margin:0 auto; padding:56px 24px 100px; display:flex; flex-direction:column
 
 @media (max-width:640px){ .card-grid{ grid-template-columns:1fr; } }
 
-/* simple list (certifications / awards / education) */
 .simple-list{ display:flex; flex-direction:column; }
 .simple-list li{
   display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
@@ -289,7 +275,6 @@ main{margin:0 auto; padding:56px 24px 100px; display:flex; flex-direction:column
   .simple-list .li-sub{ white-space:normal; padding-left:16px; }
 }
 
-/* footer */
 footer{
   border-top:1px solid var(--border-soft); padding:30px 24px 44px; text-align:center;
   font-size:11.5px; color:var(--text-faint); letter-spacing:.03em;
@@ -327,20 +312,15 @@ footer{
 <main id="panels"></main>
 
 <footer>
-  Built as a single static file · no external dependencies · © <span id="year"></span> Mohd Salim Uddin
+  · © <span id="year"></span> Mohd Salim Uddin
 </footer>
 
 <script>
-/* ============================================================
-   DATA — this is the ONLY block you edit to add, remove, or
-   reorder sections. Every section below is rendered generically
-   by the renderers further down based on its "type".
-   ============================================================ */
+
 const portfolio = {
   name: "Mohd Salim Uddin",
   role: "NetSuite Technical Consultant & SuiteScript Developer",
-  // Swap in a real photo: change to { type:"image", src:"photo.jpg" }
-  // (place photo.jpg next to this index.html file in your repo)
+
   photo: {type: "image", src: "profile.jfif"  },
   tagline: "3+ years shipping React-powered SuiteApps, SuiteFlow automations, and REST/RESTlet integrations across finance and operations.",
   contact: [
@@ -494,11 +474,6 @@ const portfolio = {
   ]
 };
 
-/* ============================================================
-   RENDERERS — one function per section "type".
-   To support a brand-new layout in the future, add a case here
-   and use it from the data above; everything else stays intact.
-   ============================================================ */
 const renderers = {
   prose: (content) => content.map(p => `<div class="prose"><p>${p}</p></div>`).join(""),
 
@@ -538,14 +513,11 @@ const renderers = {
     <li><span class="li-title">${i.title}</span>${i.sub ? `<span class="li-sub">${i.sub}</span>` : ""}</li>`).join("")}</ul>`
 };
 
-/* ============================================================
-   BUILD PAGE FROM DATA
-   ============================================================ */
+
 function build(){
   document.title = `${portfolio.name} — ${portfolio.role}`;
   document.getElementById("year").textContent = new Date().getFullYear();
 
-  // hero
   document.getElementById("heroName").textContent = portfolio.name;
   document.getElementById("heroRole").textContent = portfolio.role;
   document.getElementById("heroSummary").textContent = portfolio.tagline || "";
@@ -565,11 +537,9 @@ function build(){
     `<div class="kpi"><div class="num">${s.num}</div><div class="lbl">${s.label}</div></div>`
   ).join("");
 
-  // nav (auto-generated from section titles)
   const navLinks = document.getElementById("navLinks");
   navLinks.innerHTML = portfolio.sections.map(s => `<a href="#${s.id}" data-id="${s.id}">${s.title}</a>`).join("");
 
-  // panels
   const main = document.getElementById("panels");
   main.innerHTML = portfolio.sections.map(s => `
     <section class="panel" id="${s.id}">
@@ -583,9 +553,7 @@ function build(){
 }
 build();
 
-/* ============================================================
-   INTERACTIONS — mobile nav toggle, scroll reveal, active link
-   ============================================================ */
+
 const navToggle = document.getElementById("navToggle");
 const navLinks = document.getElementById("navLinks");
 navToggle.addEventListener("click", () => navLinks.classList.toggle("open"));
