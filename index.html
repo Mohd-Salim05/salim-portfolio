@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mohd Salim Uddin — NetSuite Technical Consultant</title>
+<meta name="description" content="Portfolio of Mohd Salim Uddin, NetSuite Technical Consultant & SuiteScript Developer.">
+
+<style>
+/* ============================================================
+   TOKENS — change these to re-skin the whole site
+   ============================================================ */
+:root{
+  --bg:            #0A0D13;
+  --surface:       rgba(255,255,255,0.045);
+  --surface-2:     rgba(255,255,255,0.03);
+  --surface-solid: #12151D;
+  --border:        rgba(255,255,255,0.09);
+  --border-soft:   rgba(255,255,255,0.06);
+  --text:          #F2F4F7;
+  --text-muted:    #99A2B3;
+  --text-faint:    #5D6675;
+  --accent:        #5B8CFF;
+  --accent-2:      #7CF2C0;
+  --accent-soft:   rgba(91,140,255,0.14);
+  --accent-glow:   rgba(91,140,255,0.35);
+  --r-sm: 10px;
+  --r-md: 16px;
+  --r-lg: 24px;
+  --r-pill: 999px;
+  --shadow-1: 0 1px 2px rgba(0,0,0,0.35);
+  --shadow-lift: 0 24px 48px -16px rgba(0,0,0,0.6);
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --ease: cubic-bezier(.2,.7,.3,1);
+}
+
+*{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+html, body{ max-width:100%; overflow-x:hidden; }
+@media (prefers-reduced-motion: reduce){ html{ scroll-behavior:auto; } }
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--sans);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+a{ color:inherit; }
+ul{ margin:0; padding:0; list-style:none; }
+p{ margin:0; }
+
+::selection{ background:var(--accent); color:#08111f; }
+
+/* ============================================================
+   FLOATING GLASS NAVBAR
+   ============================================================ */
+.navbar-wrap{
+  position:sticky; top:0; z-index:60;
+  display:flex; justify-content:center;
+  padding:18px 20px 0;
+}
+.navbar{
+  width:100%;
+  position: fixed;
+  top: 0;
+  display:flex; align-items:center; justify-content:space-between; gap:14px;
+  padding:9px 10px 9px 20px;
+  background:rgba(16,19,27,0.72);
+  border:1px solid var(--border);
+  border-radius:var(--r-pill);
+  backdrop-filter:blur(16px) saturate(160%);
+  -webkit-backdrop-filter:blur(16px) saturate(160%);
+  box-shadow:var(--shadow-1);
+}
+.brand{
+  font-size:13px; font-weight:600; letter-spacing:-0.01em;
+  text-decoration:none; color:var(--text);
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0;
+}
+.brand span{ color:var(--text-faint); font-weight:400; }
+.navlinks{ display:flex; align-items:center; gap:4px; flex-shrink:0; }
+.navlinks a{
+  position:relative;
+  font-size:13px; font-weight:500;
+  color:var(--text-muted); text-decoration:none;
+  padding:8px 14px; border-radius:var(--r-pill);
+  transition:color .18s var(--ease), background .18s var(--ease);
+}
+.navlinks a:hover{ color:var(--text); background:var(--surface); }
+.navlinks a.active{ color:var(--bg); background:var(--accent); }
+.navtoggle{
+  display:none; flex-shrink:0; align-items:center; justify-content:center;
+  width:36px; height:36px; background:var(--surface); border:1px solid var(--border);
+  color:var(--text); border-radius:var(--r-pill); cursor:pointer; font-size:16px;
+}
+
+@media (max-width:820px){
+  .navlinks{
+    position:absolute; top:calc(100% + 10px); left:20px; right:20px;
+    display:flex; flex-direction:column; gap:4px;
+    background:rgba(16,19,27,0.92); border:1px solid var(--border); border-radius:var(--r-md);
+    padding:10px; backdrop-filter:blur(16px);
+    opacity:0; visibility:hidden; transform:translateY(-6px);
+    transition:opacity .2s var(--ease), transform .2s var(--ease), visibility .2s var(--ease);
+    max-height:70vh; overflow-y:auto;
+  }
+  .navlinks.open{ opacity:1; visibility:visible; transform:translateY(0); }
+  .navlinks a{ width:100%; }
+  .navtoggle{ display:flex; }
+}
+@media (max-width:420px){
+  .navbar-wrap{ padding:14px 14px 0; }
+  .brand{ font-size:12px; max-width:56vw; }
+}
+
+/* ============================================================
+   HERO — bento dashboard header
+   ============================================================ */
+.hero{ position:relative; margin:0 auto; padding:64px 24px 8px; overflow:hidden; }
+.glow{ position:absolute; border-radius:50%; filter:blur(70px); pointer-events:none; z-index:0; }
+.glow-1{ width:420px; height:420px; top:-160px; left:-120px; background:radial-gradient(circle, var(--accent-glow), transparent 70%); opacity:.5; }
+.glow-2{ width:360px; height:360px; top:-80px; right:-140px; background:radial-gradient(circle, rgba(124,242,192,0.28), transparent 70%); opacity:.4; }
+
+.hero-main{ position:relative; z-index:1; display:flex; align-items:center; gap:28px; flex-wrap:wrap; }
+.avatar-wrap{ position:relative; width:104px; height:104px; flex-shrink:0; }
+.avatar-glow{ position:absolute; inset:-14px; border-radius:50%; background:radial-gradient(circle, var(--accent-glow), transparent 72%); filter:blur(10px); }
+.avatar{
+  position:relative; width:104px; height:104px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:32px; font-weight:700; color:var(--text);
+  background:linear-gradient(160deg, var(--surface-solid), #0d0f16);
+  border:1px solid var(--border-soft);
+}
+.avatar img{ width:100%; height:100%; object-fit:cover; border-radius:50%; }
+
+.hero-copy{ min-width:0; flex:1; }
+.role-tag{
+  display:inline-flex; align-items:center; gap:7px;
+  font-size:12px; font-weight:600; color:var(--accent);
+  background:var(--accent-soft); border:1px solid rgba(91,140,255,0.3);
+  padding:5px 12px; border-radius:var(--r-pill); margin-bottom:14px;
+}
+.role-tag::before{ content:""; width:6px; height:6px; border-radius:50%; background:var(--accent-2); box-shadow:0 0 8px var(--accent-2); }
+.hero h1{ margin:0 0 8px; font-size:clamp(30px,4.4vw,46px); font-weight:800; letter-spacing:-0.03em; line-height:1.08; }
+.tagline{ color:var(--text-muted); font-size:15.5px; max-width:600px; margin-bottom:20px; }
+
+.contact-row{ display:flex; flex-wrap:wrap; gap:8px; }
+.contact-row a, .contact-row span{
+  font-size:12.5px; color:var(--text-muted); text-decoration:none;
+  border:1px solid var(--border); background:var(--surface);
+  padding:6px 13px; border-radius:var(--r-pill);
+  transition:color .18s var(--ease), border-color .18s var(--ease), background .18s var(--ease);
+}
+.contact-row a:hover{ color:var(--text); border-color:var(--accent); background:var(--accent-soft); }
+
+.kpi-grid{
+  position:relative; z-index:1;
+  display:grid; grid-template-columns:repeat(4,1fr); gap:14px;
+  margin-top:40px;
+}
+.kpi{
+  background:var(--surface); border:1px solid var(--border); border-radius:var(--r-md);
+  padding:18px 20px; transition:transform .2s var(--ease), border-color .2s var(--ease);
+}
+.kpi:hover{ transform:translateY(-3px); border-color:rgba(91,140,255,0.4); }
+.kpi .num{
+  font-size:24px; font-weight:800; letter-spacing:-0.02em;
+  background:linear-gradient(135deg, var(--text), var(--accent) 130%);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.kpi .lbl{ font-size:11.5px; color:var(--text-muted); margin-top:4px; }
+
+@media (max-width:720px){
+  .kpi-grid{ grid-template-columns:repeat(2,1fr); }
+}
+@media (max-width:520px){
+  .hero{ padding:48px 20px 4px; }
+  .hero-main{ gap:18px; }
+  .avatar, .avatar-wrap, .avatar-glow{ width:80px; height:80px; }
+  .avatar{ font-size:24px; }
+  .hero h1{ font-size:26px; }
+}
+
+/* ============================================================
+   PANELS (sections) — glass widget cards, generated from data
+   ============================================================ */
+main{margin:0 auto; padding:56px 24px 100px; display:flex; flex-direction:column; gap:22px; }
+
+.panel{
+  background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg);
+  padding:36px 38px; box-shadow:var(--shadow-1);
+  opacity:0; transform:translateY(18px);
+  transition:opacity .55s var(--ease), transform .55s var(--ease);
+}
+.panel.is-visible{ opacity:1; transform:translateY(0); }
+@media (prefers-reduced-motion: reduce){ .panel{ opacity:1; transform:none; transition:none; } }
+
+.panel-head{ display:flex; align-items:center; gap:12px; margin-bottom:26px; }
+.panel-head .bar{ width:4px; height:20px; border-radius:var(--r-pill); background:linear-gradient(180deg, var(--accent), var(--accent-2)); }
+.panel-head h2{ margin:0; font-size:19px; font-weight:700; letter-spacing:-0.01em; }
+
+@media (max-width:640px){
+  main{ padding:44px 18px 70px; gap:16px; }
+  .panel{ padding:26px 22px; border-radius:var(--r-md); }
+}
+
+/* prose */
+.prose p{ color:var(--text-muted); margin-bottom:12px; font-size:15px; max-width:720px; }
+.prose p:last-child{ margin-bottom:0; }
+
+/* skill groups */
+.skill-groups{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:24px; }
+.skill-group .g-title{ font-size:12px; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:.05em; margin-bottom:12px; }
+.chip-list{ display:flex; flex-wrap:wrap; gap:7px; }
+.chip{
+  font-size:12px; font-weight:500; padding:6px 11px; border-radius:var(--r-pill);
+  color:var(--accent); background:var(--accent-soft); border:1px solid rgba(91,140,255,0.22);
+}
+
+@media (max-width:640px){ .skill-groups{ grid-template-columns:1fr 1fr; gap:18px; } }
+@media (max-width:420px){ .skill-groups{ grid-template-columns:1fr; } }
+
+/* timeline (experience) — workflow stepper */
+.tl-entry{ margin-bottom:30px; }
+.tl-entry:last-child{ margin-bottom:0; }
+.tl-head{ display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-bottom:2px; }
+.tl-head .org{ font-size:15.5px; font-weight:700; }
+.tl-head .period{ font-size:12.5px; color:var(--text-faint); font-family:var(--mono); }
+.tl-role{ color:var(--accent); font-size:13px; font-weight:600; margin-bottom:22px; }
+
+.tl-steps{ position:relative; padding-left:26px; }
+.tl-steps::before{
+  content:""; position:absolute; left:5px; top:6px; bottom:6px; width:2px;
+  background:linear-gradient(180deg, var(--accent), var(--accent-2), transparent);
+}
+.tl-block{ position:relative; margin-bottom:18px; }
+.tl-block:last-child{ margin-bottom:0; }
+.tl-block::before{
+  content:""; position:absolute; left:-26px; top:5px; width:11px; height:11px; border-radius:50%;
+  background:var(--bg); border:2px solid var(--accent); box-shadow:0 0 0 4px rgba(91,140,255,0.15);
+}
+.tl-card{ background:var(--surface-2); border:1px solid var(--border-soft); border-radius:var(--r-md); padding:18px 20px; }
+.tl-card .b-title{ font-size:14.5px; font-weight:700; margin-bottom:10px; }
+.tl-card ul{ display:flex; flex-direction:column; gap:7px; }
+.tl-card li{ font-size:13.5px; color:var(--text-muted); position:relative; padding-left:15px; }
+.tl-card li::before{ content:""; position:absolute; left:0; top:8px; width:5px; height:5px; border-radius:50%; background:var(--text-faint); }
+.tl-stats{ display:flex; flex-wrap:wrap; gap:7px; margin-top:12px; }
+.tl-stats span{ font-size:11px; font-weight:600; color:var(--accent-2); background:rgba(124,242,192,0.1); border:1px solid rgba(124,242,192,0.25); padding:4px 9px; border-radius:var(--r-pill); }
+
+@media (max-width:640px){ .tl-steps{ padding-left:20px; } .tl-block::before{ left:-20px; } }
+
+/* project cards — bento tiles */
+.card-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:18px; }
+.card{
+  position:relative; background:var(--surface-2); border:1px solid var(--border-soft); border-radius:var(--r-md);
+  padding:22px 24px 22px; overflow:hidden;
+  transition:transform .22s var(--ease), border-color .22s var(--ease), box-shadow .22s var(--ease);
+}
+.card::before{ content:""; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg, var(--accent), var(--accent-2)); }
+.card:hover{ transform:translateY(-4px); border-color:rgba(91,140,255,0.35); box-shadow:var(--shadow-lift); }
+.card h3{ margin:10px 0 12px; font-size:15px; font-weight:700; }
+.card ul{ display:flex; flex-direction:column; gap:7px; margin-bottom:14px; }
+.card li{ font-size:13.5px; color:var(--text-muted); position:relative; padding-left:15px; }
+.card li::before{ content:""; position:absolute; left:0; top:8px; width:5px; height:5px; border-radius:50%; background:var(--text-faint); }
+.card .tag-list{ display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+.card .tag-list span{ font-size:10.5px; font-weight:600; color:var(--text-faint); border:1px solid var(--border); padding:3px 8px; border-radius:var(--r-pill); }
+
+@media (max-width:640px){ .card-grid{ grid-template-columns:1fr; } }
+
+/* simple list (certifications / awards / education) */
+.simple-list{ display:flex; flex-direction:column; }
+.simple-list li{
+  display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+  padding:14px 4px; border-bottom:1px solid var(--border-soft);
+  transition:background .18s var(--ease);
+  border-radius:var(--r-sm);
+}
+.simple-list li:last-child{ border-bottom:none; }
+.simple-list li:hover{ background:var(--surface-2); padding-left:12px; padding-right:12px; }
+.simple-list .li-title{ font-size:14.5px; font-weight:600; position:relative; padding-left:16px; }
+.simple-list .li-title::before{ content:""; position:absolute; left:0; top:7px; width:7px; height:7px; border-radius:50%; background:var(--accent); }
+.simple-list .li-sub{ font-size:12px; color:var(--text-faint); font-family:var(--mono); }
+
+@media (max-width:480px){
+  .simple-list li{ flex-direction:column; align-items:flex-start; gap:4px; }
+  .simple-list .li-sub{ white-space:normal; padding-left:16px; }
+}
+
+/* footer */
+footer{
+  border-top:1px solid var(--border-soft); padding:30px 24px 44px; text-align:center;
+  font-size:11.5px; color:var(--text-faint); letter-spacing:.03em;
+}
+</style>
+</head>
+<body>
+
+<div class="navbar-wrap">
+  <nav class="navbar">
+    <a class="brand" href="#top">Mohd Salim Uddin <span>· NetSuite Consultant</span></a>
+    <div class="navlinks" id="navLinks"></div>
+    <button class="navtoggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+  </nav>
+</div>
+
+<header class="hero" id="top">
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+  <div class="hero-main">
+    <div class="avatar-wrap">
+      <div class="avatar-glow"></div>
+      <div class="avatar" id="avatarSlot"></div>
+    </div>
+    <div class="hero-copy">
+      <span class="role-tag" id="heroRole"></span>
+      <h1 id="heroName"></h1>
+      <p class="tagline" id="heroSummary"></p>
+      <div class="contact-row" id="contactStrip"></div>
+    </div>
+  </div>
+  <div class="kpi-grid" id="statStrip"></div>
+</header>
+
+<main id="panels"></main>
+
+<footer>
+  Built as a single static file · no external dependencies · © <span id="year"></span> Mohd Salim Uddin
+</footer>
+
+<script>
+/* ============================================================
+   DATA — this is the ONLY block you edit to add, remove, or
+   reorder sections. Every section below is rendered generically
+   by the renderers further down based on its "type".
+   ============================================================ */
+const portfolio = {
+  name: "Mohd Salim Uddin",
+  role: "NetSuite Technical Consultant & SuiteScript Developer",
+  // Swap in a real photo: change to { type:"image", src:"photo.jpg" }
+  // (place photo.jpg next to this index.html file in your repo)
+  photo: { type: "initials", value: "MS" },
+  tagline: "3+ years shipping React-powered SuiteApps, SuiteFlow automations, and REST/RESTlet integrations across finance and operations.",
+  contact: [
+    { label: "Email", value: "mohammed.salim9515@gmail.com", href: "mailto:mohammed.salim9515@gmail.com" },
+    { label: "Phone", value: "+91 9182399280", href: "tel:+919182399280" },
+    { label: "Location", value: "Hyderabad, India" },
+    { label: "LinkedIn", value: "linkedin.com/in/mohdsalim95", href: "https://www.linkedin.com/in/mohdsalim95" }
+  ],
+  stats: [
+    { num: "3+", label: "Years Experience" },
+    { num: "4", label: "SuiteApps Shipped" },
+    { num: "70%", label: "Faster Processing" },
+    { num: "3", label: "NetSuite Certifications" }
+  ],
+
+  sections: [
+    {
+      id: "summary",
+      title: "Summary",
+      type: "prose",
+      content: [
+        "NetSuite Technical Consultant and SuiteScript developer with 3+ years designing and delivering custom NetSuite solutions across finance, operations, and project management. Works across SuiteScript 2.x/2.1 (Client, User Event, Map/Reduce, Suitelet, RESTlet, Scheduled), SDF, SuiteFlow, SuiteTalk, and SuiteQL, with a focus on React-based Suitelet SPAs and REST API integrations spanning Procure-to-Pay and Order-to-Cash processes.",
+        "Recently delivered a full Timesheet Management SuiteApp built with SDF — a React time-entry UI, SuiteScript server logic, SuiteFlow approvals, and SuiteQL reporting — cutting weekly timesheet processing effort by 70% and approval cycle time from 3 days to same-day.",
+        "Focused on turning complex business requirements into scalable, user-friendly NetSuite solutions, with hands-on experience across finance automation, inventory management, revenue recognition, and project cost tracking."
+      ]
+    },
+    {
+      id: "skills",
+      title: "Skills",
+      type: "skillGroups",
+      content: [
+        { group: "SuiteScript & SuiteCloud", items: ["SuiteScript 1.0/2.x", "Client Script", "User Event", "Map/Reduce", "Suitelet", "RESTlet", "Scheduled Script", "SDF", "SuiteCloud CLI", "SuiteBuilder", "SuiteFlow", "SuiteTalk (REST)", "SuiteQL", "SuiteAnalytics"] },
+        { group: "NetSuite Modules", items: ["Custom Records/Fields/Forms", "Saved Searches", "Advanced PDF/HTML Templates", "Role & Permissions", "Procure-to-Pay", "Order-to-Cash", "Revenue Recognition", "Inventory Management", "Project Management", "Advanced Budgeting", "Time & Expense"] },
+        { group: "Integration & APIs", items: ["REST API", "SOAP API", "RESTlet Integration", "Token-Based Auth (TBA)", "OAuth 2.0", "JSON/XML", "CSV Import/Export", "Real-Time Sync", "3rd-Party API Integration"] },
+        { group: "Front-End", items: ["React.js", "JavaScript (ES6+)", "HTML5", "CSS3", "React SPA in Suitelet", "Client-Side Validation", "SheetJS/XLSX Export"] },
+        { group: "Back-End", items: ["Java", "SuiteScript Server-Side Processing"] },
+        { group: "Business Processes", items: ["Procure-to-Pay", "Order-to-Cash", "Revenue Recognition (ASC 606)", "Financial Close Automation", "Inventory Adjustment & Transfer", "Project Cost Tracking", "Timesheet & Resource Mgmt", "Approval Workflow Automation"] },
+        { group: "Tools", items: ["Git", "Jira", "SuiteCloud IDE", "Postman", "Microsoft Excel", "Chrome Extension Dev"] }
+      ]
+    },
+    {
+      id: "experience",
+      title: "Experience",
+      type: "timeline",
+      content: [
+        {
+          org: "MindSuite Informatics Private Limited",
+          role: "NetSuite Technical Consultant",
+          period: "Feb 2022 — Present",
+          blocks: [
+            {
+              title: "Timesheet Management SuiteApp (SDF)",
+              bullets: [
+                "Architected a Timesheet Management SuiteApp on SDF, giving unlimited users time entry without extra NetSuite licences",
+                "Built a React Suitelet SPA with weekly/monthly entry grids, project-task-resource hierarchy, and Excel export",
+                "Added Map/Reduce bulk processing, SuiteFlow multi-level approvals, and SuiteQL reporting"
+              ],
+              stats: ["70% ↓ processing effort", "3 days → same-day approvals"]
+            },
+            {
+              title: "Advanced Budgeting & Procure-to-Pay Automation",
+              bullets: [
+                "Built end-to-end P2P automation covering fund requests, multi-level budget approvals, PO authorization, and utilization tracking",
+                "Enforced real-time budget threshold validation with automated overage alerts and full audit-trail compliance"
+              ],
+              stats: ["50% ↓ procurement cycle time"]
+            },
+            {
+              title: "Finance & Operations Automation",
+              bullets: [
+                "Automated journal entries, loan processing, and operational workflows across Client, User Event, Map/Reduce, and Scheduled scripts",
+                "Integrated NetSuite with external systems via RESTlet APIs using Token-Based Authentication"
+              ],
+              stats: ["30% ↓ manual finance effort", "Loan processing: hours → <5 min", "35% ↓ manual reconciliation", "Sync: daily batch → <5 min"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: "projects",
+      title: "Projects",
+      type: "cards",
+      content: [
+        {
+          title: "Timesheet Management SuiteApp",
+          bullets: [
+            "React Suitelet SPA with dynamic time-entry grids, inline editing, and real-time hour tracking across projects",
+            "Cell-level dirty-row tracking — only modified rows/days are sent to the server on save",
+            "Bulk approval and employee access modules with searchable lists and inline edit/create",
+            "Admin dashboard with project breakdown, daily trend charts, and productivity metrics",
+            "Performance tuned with useMemo, useCallback, React.memo, and a TabCacheProvider pattern"
+          ],
+          tags: ["React", "SDF", "SuiteFlow", "SuiteQL", "Map/Reduce"]
+        },
+        {
+          title: "Work Breakdown Structure (WBS)",
+          bullets: [
+            "React-based WBS Suitelet SPA replacing a disconnected Excel cost-tracking process",
+            "Dynamic parent-child cost hierarchies with inline editing and real-time budget rollups",
+            "KPI dashboard surfacing budget variance, burn rate, and cost-at-completion in real time"
+          ],
+          tags: ["React", "Suitelet", "Project Costing"]
+        },
+        {
+          title: "NetSuite API Integration",
+          bullets: [
+            "RESTlet-based APIs connecting NetSuite with Power BI, Salesforce, and Reachware Studio",
+            "Real-time bidirectional sync of sales orders, inventory levels, and customer records",
+            "Token-Based Authentication with rate-limit-aware retry logic"
+          ],
+          tags: ["RESTlet", "Power BI", "Salesforce", "TBA"]
+        },
+        {
+          title: "Inventory-Store SuiteApp",
+          bullets: [
+            "Suitelet-based inventory count entry system backed by Map/Reduce for structured adjustments",
+            "Automated purchase requisitions and transfer orders, reducing manual effort",
+            "SuiteFlow approval workflows improving stock-tracking accuracy across warehouses"
+          ],
+          tags: ["Suitelet", "Map/Reduce", "SuiteFlow"]
+        }
+      ]
+    },
+    {
+      id: "certifications",
+      title: "Certifications",
+      type: "list",
+      content: [
+        { title: "Oracle NetSuite Certified AI Foundations Associate" },
+        { title: "Oracle NetSuite Certified BI and Reporting Associate" },
+        { title: "Oracle NetSuite Certified Financial Associate" }
+      ]
+    },
+    {
+      id: "awards",
+      title: "Awards & Recognition",
+      type: "list",
+      content: [
+        { title: "Silent Soldier Award", sub: "Consistent behind-the-scenes contributions and reliability" }
+      ]
+    },
+    {
+      id: "education",
+      title: "Education",
+      type: "list",
+      content: [
+        { title: "B.Tech — Computer Science", sub: "Shadan College of Engineering & Technology · 2018–2022" }
+      ]
+    }
+  ]
+};
+
+/* ============================================================
+   RENDERERS — one function per section "type".
+   To support a brand-new layout in the future, add a case here
+   and use it from the data above; everything else stays intact.
+   ============================================================ */
+const renderers = {
+  prose: (content) => content.map(p => `<div class="prose"><p>${p}</p></div>`).join(""),
+
+  skillGroups: (content) => `<div class="skill-groups">${content.map(g => `
+    <div class="skill-group">
+      <div class="g-title">${g.group}</div>
+      <div class="chip-list">${g.items.map(i => `<span class="chip">${i}</span>`).join("")}</div>
+    </div>`).join("")}</div>`,
+
+  timeline: (content) => content.map(entry => `
+    <div class="tl-entry">
+      <div class="tl-head">
+        <span class="org">${entry.org}</span>
+        <span class="period">${entry.period}</span>
+      </div>
+      <div class="tl-role">${entry.role}</div>
+      <div class="tl-steps">
+        ${entry.blocks.map(b => `
+          <div class="tl-block">
+            <div class="tl-card">
+              <div class="b-title">${b.title}</div>
+              <ul>${b.bullets.map(x => `<li>${x}</li>`).join("")}</ul>
+              ${b.stats ? `<div class="tl-stats">${b.stats.map(s => `<span>${s}</span>`).join("")}</div>` : ""}
+            </div>
+          </div>`).join("")}
+      </div>
+    </div>`).join(""),
+
+  cards: (content) => `<div class="card-grid">${content.map(c => `
+    <div class="card">
+      <h3>${c.title}</h3>
+      <ul>${c.bullets.map(b => `<li>${b}</li>`).join("")}</ul>
+      ${c.tags ? `<div class="tag-list">${c.tags.map(t => `<span>${t}</span>`).join("")}</div>` : ""}
+    </div>`).join("")}</div>`,
+
+  list: (content) => `<ul class="simple-list">${content.map(i => `
+    <li><span class="li-title">${i.title}</span>${i.sub ? `<span class="li-sub">${i.sub}</span>` : ""}</li>`).join("")}</ul>`
+};
+
+/* ============================================================
+   BUILD PAGE FROM DATA
+   ============================================================ */
+function build(){
+  document.title = `${portfolio.name} — ${portfolio.role}`;
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  // hero
+  document.getElementById("heroName").textContent = portfolio.name;
+  document.getElementById("heroRole").textContent = portfolio.role;
+  document.getElementById("heroSummary").textContent = portfolio.tagline || "";
+
+  const avatarSlot = document.getElementById("avatarSlot");
+  if(portfolio.photo.type === "image"){
+    avatarSlot.innerHTML = `<img src="${portfolio.photo.src}" alt="${portfolio.name}">`;
+  } else {
+    avatarSlot.textContent = portfolio.photo.value;
+  }
+
+  document.getElementById("contactStrip").innerHTML = portfolio.contact.map(c =>
+    c.href ? `<a href="${c.href}">${c.value}</a>` : `<span>${c.value}</span>`
+  ).join("");
+
+  document.getElementById("statStrip").innerHTML = portfolio.stats.map(s =>
+    `<div class="kpi"><div class="num">${s.num}</div><div class="lbl">${s.label}</div></div>`
+  ).join("");
+
+  // nav (auto-generated from section titles)
+  const navLinks = document.getElementById("navLinks");
+  navLinks.innerHTML = portfolio.sections.map(s => `<a href="#${s.id}" data-id="${s.id}">${s.title}</a>`).join("");
+
+  // panels
+  const main = document.getElementById("panels");
+  main.innerHTML = portfolio.sections.map(s => `
+    <section class="panel" id="${s.id}">
+      <div class="panel-head">
+        <span class="bar"></span>
+        <h2>${s.title}</h2>
+      </div>
+      ${renderers[s.type] ? renderers[s.type](s.content) : ""}
+    </section>
+  `).join("");
+}
+build();
+
+/* ============================================================
+   INTERACTIONS — mobile nav toggle, scroll reveal, active link
+   ============================================================ */
+const navToggle = document.getElementById("navToggle");
+const navLinks = document.getElementById("navLinks");
+navToggle.addEventListener("click", () => navLinks.classList.toggle("open"));
+navLinks.querySelectorAll("a").forEach(a => a.addEventListener("click", () => navLinks.classList.remove("open")));
+
+const panels = document.querySelectorAll(".panel");
+const navAnchors = document.querySelectorAll(".navlinks a");
+
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add("is-visible"); });
+}, { threshold: 0.12 });
+panels.forEach(s => revealObserver.observe(s));
+
+const activeObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      navAnchors.forEach(a => a.classList.toggle("active", a.dataset.id === e.target.id));
+    }
+  });
+}, { threshold: 0.5 });
+panels.forEach(s => activeObserver.observe(s));
+</script>
+</body>
+</html>
