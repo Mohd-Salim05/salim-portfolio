@@ -149,6 +149,17 @@ p{ margin:0; }
 }
 .contact-row a:hover{ color:var(--text); border-color:var(--accent); background:var(--accent-soft); }
 
+.resume-btn{
+  display:inline-flex; align-items:center; gap:6px;
+  font-size:13px; font-weight:600; color:#08111f;
+  background:linear-gradient(135deg, var(--accent), var(--accent-2));
+  padding:9px 18px; border-radius:var(--r-pill); text-decoration:none;
+  margin-top:14px; box-shadow:0 8px 20px -8px var(--accent-glow);
+  transition:transform .18s var(--ease), box-shadow .18s var(--ease);
+}
+.resume-btn:hover{ transform:translateY(-2px); box-shadow:0 12px 26px -8px var(--accent-glow); }
+
+
 .kpi-grid{
   position:relative; z-index:1;
   display:grid; grid-template-columns:repeat(4,1fr); gap:14px;
