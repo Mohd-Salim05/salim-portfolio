@@ -335,7 +335,7 @@ const portfolio = {
 
   photo: {type: "image", src: "profile.jfif"  },
   resume: "Mohd_Salimuddin.pdf",
-  tagline: "3+ years shipping React-powered SuiteApps, SuiteFlow automations, and REST/RESTlet integrations across finance and operations.",
+  tagline: "{years} years shipping React-powered SuiteApps, SuiteFlow automations, and REST/RESTlet integrations across finance and operations.",
   contact: [
     { label: "Email", value: "mohammed.salim9515@gmail.com", href: "mailto:mohammed.salim9515@gmail.com" },
     { label: "Phone", value: "+91 9182399280", href: "tel:+919182399280" },
@@ -343,7 +343,7 @@ const portfolio = {
     { label: "LinkedIn", value: "linkedin.com/in/mohdsalim95", href: "https://www.linkedin.com/in/mohdsalim95" }
   ],
   stats: [
-    { num: "3+", label: "Years Experience" },
+    { dynamic: "years", label: "Years Experience"  },
     { num: "4", label: "SuiteApps Shipped" },
     { num: "70%", label: "Faster Processing" },
     { num: "3", label: "NetSuite Certifications" }
@@ -355,7 +355,7 @@ const portfolio = {
       title: "Summary",
       type: "prose",
       content: [
-        "NetSuite Technical Consultant and SuiteScript developer with 3+ years designing and delivering custom NetSuite solutions across finance, operations, and project management. Works across SuiteScript 2.x/2.1 (Client, User Event, Map/Reduce, Suitelet, RESTlet, Scheduled), SDF, SuiteFlow, SuiteTalk, and SuiteQL, with a focus on React-based Suitelet SPAs and REST API integrations spanning Procure-to-Pay and Order-to-Cash processes.",
+        "NetSuite Technical Consultant and SuiteScript developer with {years} years designing and delivering custom NetSuite solutions across finance, operations, and project management. Works across SuiteScript 2.x/2.1 (Client, User Event, Map/Reduce, Suitelet, RESTlet, Scheduled), SDF, SuiteFlow, SuiteTalk, and SuiteQL, with a focus on React-based Suitelet SPAs and REST API integrations spanning Procure-to-Pay and Order-to-Cash processes.",
         "Recently delivered a full Timesheet Management SuiteApp built with SDF — a React time-entry UI, SuiteScript server logic, SuiteFlow approvals, and SuiteQL reporting — cutting weekly timesheet processing effort by 70% and approval cycle time from 3 days to same-day.",
         "Focused on turning complex business requirements into scalable, user-friendly NetSuite solutions, with hands-on experience across finance automation, inventory management, revenue recognition, and project cost tracking."
       ]
@@ -527,15 +527,39 @@ const renderers = {
 };
 
 
+
+function yearsExperience(startDateStr){
+  const start = new Date(startDateStr);
+  const now = new Date();
+  let months = (now.getFullYear() - start.getFullYear()) * 12 + (now.getMonth() - start.getMonth());
+  if(now.getDate() < start.getDate()) months -= 1;
+  months = Math.max(months, 0);
+  const years = Math.floor(months / 12);
+  const hasExtraMonths = months % 12 > 0;
+  return `${years}${hasExtraMonths ? "+" : ""}`;
+}
+
+
+
+
 function build(){
   document.title = `${portfolio.name} — ${portfolio.role}`;
   document.getElementById("year").textContent = new Date().getFullYear();
 
+   const yearsLabel = portfolio.experienceStart ? yearsExperience(portfolio.experienceStart) : "";
+  const withYears = (str) => (str || "").replaceAll("{years}", yearsLabel);
+
+   portfolio.sections.forEach(sec => {
+    if(sec.type === "prose"){
+      sec.content = sec.content.map(withYears);
+    }
+  });
+
   document.getElementById("heroName").textContent = portfolio.name;
   document.getElementById("heroRole").textContent = portfolio.role;
-  document.getElementById("heroSummary").textContent = portfolio.tagline || "";
+   document.getElementById("heroSummary").textContent = withYears(portfolio.tagline);
 
-  const avatarSlot = document.getElementById("avatarSlot");
+   const avatarSlot = document.getElementById("avatarSlot");
   if(portfolio.photo.type === "image"){
     avatarSlot.innerHTML = `<img src="${portfolio.photo.src}" alt="${portfolio.name}">`;
   } else {
