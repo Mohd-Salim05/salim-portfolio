@@ -574,9 +574,10 @@ function build(){
     ? `<a class="resume-btn" href="${portfolio.resume}" download>Download Resume ↓</a>`
     : "";
 
-  document.getElementById("statStrip").innerHTML = portfolio.stats.map(s =>
-    `<div class="kpi"><div class="num">${s.num}</div><div class="lbl">${s.label}</div></div>`
-  ).join("");
+  document.getElementById("statStrip").innerHTML = portfolio.stats.map(s => {
+    const value = s.dynamic === "years" ? yearsLabel : s.num;
+    return `<div class="kpi"><div class="num">${value}</div><div class="lbl">${s.label}</div></div>`;
+  }).join("");
 
   const navLinks = document.getElementById("navLinks");
   navLinks.innerHTML = portfolio.sections.map(s => `<a href="#${s.id}" data-id="${s.id}">${s.title}</a>`).join("");
